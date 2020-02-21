@@ -53,7 +53,7 @@ class PredictionModel(DefineDoseFromCT):
         # Make directories for data and models
         model_results_path = '{}/{}'.format(results_patent_path, model_name)
         self.model_dir = make_directory_and_return_path('{}/models'.format(model_results_path))
-        self.prediction_dir = make_directory_and_return_path('{}/{}-predictions'.format(model_results_path, stage))
+        self.prediction_dir = '{}/{}-predictions'.format(model_results_path, stage)
 
         # Make template for model path
         self.model_path_template = '{}/epoch_'.format(self.model_dir)
@@ -165,7 +165,7 @@ class PredictionModel(DefineDoseFromCT):
         """
         # Define new models, or load most recent model if model already exists
         self.generator = load_model('{}{}.h5'.format(self.model_path_template, epoch))
-
+        os.makedirs(self.prediction_dir, exist_ok=True)
         # Use generator to predict dose
         number_of_batches = self.data_loader.number_of_batches()
         print('Predicting dose')
