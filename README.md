@@ -66,8 +66,11 @@ This should be the simplest way to compete in OpenKBP because the software requi
 2. Make a directory in the _main_ directory of your Google Drive and name it _open-kbp_, henceforth referred to as
  the open-kbp directory.
 3. Upload the folder containing all competition data to the open-kbp directory. 
-4. Upload the files in this repository (i.e., provided_code directory and the main.ipynb notebook file) to your open-kbp
- directory. 
+4. Upload the files in this repository (i.e., provided_code directory and the _main\_notebook.ipynb_ notebook file) to
+ your open-kbp
+ directory. It takes a while for the files to copy to Google Drive, and there is a small lag between when they're
+  uploaded and when Colab can access them. We recommend you wait an extra 15 minutes after the data is uploaded before
+   continuing.
 5. Right-click the notebook file, and select: Open with > Google Colaboratory. This should open up a
  window where you can run the notebook in the cloud (for free!). 
 6. In the Google Colab toolbar select: Runtime > Change Runtime. This will open another popup where you should ensure
