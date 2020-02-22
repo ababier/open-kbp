@@ -2,7 +2,7 @@
 
 ![](read-me-images/aapm.png)
   
-The _open-kbp-competition_ repository provides code that is intended to get participants of the OpenKBP Challenge
+The _open-kbp_ repository provides code that is intended to get participants of the OpenKBP Challenge
  started with dose prediction. The repository can be used on either a local machine or in the cloud (for free) using 
 [Google Colab](https://colab.research.google.com).
 
@@ -15,22 +15,23 @@ The _open-kbp-competition_ repository provides code that is intended to get part
 # Table of Contents
 - [What this code does](#what-this-code-does)
 - [Prerequisites](#prerequisites)
+- [Created folder structure](#created-folder-structure)
 - [Getting started...](#getting-started)
   + [in Colab](#getting-started-in-colab)
   + [on a local machine](#getting-started-on-a-local-machine)
-- [Created folder structure](#created-folder-structure)
 - [Running the code...](#running-the-code)
   + [in Colab](#running-the-code-in-colab)
   + [on a local machine](#running-the-code-on-local-machine)
 - [Competition organizers](#competition-organizers)
 
 ## What this code does
-This code will train a small neural network to predict dose. There are four .py files that are required to run the main
- .ipynb and main.py files, however, they were also designed for users of the OpenKBP dataset. Below, we summarize the
-  functionality of each .py file, but more details are provided in the files themselves.
+This code will train a small neural network to predict dose. There are five .py files that are required to run the
+ _main\_notebook.ipynb_ and _main.py_ files. Below, we summarize the functionality of each .py file, but more details
+  are provided in the files themselves.
   
   - _data_loader.py_: Contains the _DataLoader_ class, which loads the data from the dataset in a standard format.
    Several data formats (e.g., dose-volume histogram) are available to cater to different modeling techniques.
+  - _dose_evaluation_class.py_: Contains the _EvaluateDose_ class, which is used to evaluate the competition metrics.
   - _general_functions.py_: Contain several functions with a variety of purposes. 
   - _network_architectures.py_: Contains the _DefineDoseFromCT_ class, which builds the architecture for a basic U-Net
    model. This class is inherited by the _PredictionModel_ class. Please note that we intentionally included a network
@@ -50,6 +51,39 @@ The following are required to run the given notebook, however, for the competiti
 - Linux
 - Python 3
 - NVIDIA GPU with CUDA and CuDNN
+
+
+## Created folder structure
+This repository will create a file structure that branches from a directory called _open-kbp_. The file structure
+will keep information about predictions from a model (called baseline in this example) and the model itself in the
+ _results_ directory. It assume that the data provided for the OpenKBP competition is in a directory called 
+ _provided-data_. This code will also make a directory called _submissions_ to house the zip files that can be
+  submitted to CodaLab for validation set evaluation (this code will generalize to test data once the test data is
+   released). Use this folder tree as a reference (it will more or less build itself).
+   
+```bash
+open-kbp
+├── provided-data
+│   ├── train-pats
+│   │   ├── pt_*
+│   │       ├── *.csv
+│   └── valid-pats
+│       ├── pt_*
+│           ├── *.csv
+├── results
+│   ├── baseline
+│   │   ├── models
+│   │   │   ├── epoch_*.h5
+│   │   ├── hold-out-predictions
+│   │   │   ├── pt_*.csv
+│   │   └── validation-predictions
+│   │       ├── pt_*.csv
+│   ├── **Structure repeats when new model is made**
+└── submissions
+    ├── baseline.zip
+    ├── **Structure repeats when new model is made**   
+
+```
 
 ## Getting started
 Sign up for the OpenKBP competition of [CodaLab](https://competitions.codalab.org/competitions/?q=openkbp). Once
@@ -95,38 +129,6 @@ This should be the simplest way to compete in OpenKBP because the software requi
     cd open-kbp-competition
     pip3 install -r requirements.txt
     ```
-
-## Created folder structure
-This repository will create a file structure that branches from a directory called _open-kbp_. The file structure
-will keep information about predictions from a model (called baseline in this example) and the model itself in the
- _results_ directory. It assume that the data provided for the OpenKBP competition is in a directory called 
- _provided-data_. This code will also make a directory called _submissions_ to house the zip files that can be
-  submitted to CodaLab for validation set evaluation (this code will generalize to test data once the test data is
-   released).
-   
-```bash
-open-kbp
-├── provided-data
-│   ├── train-pats
-│   │   ├── pt_*
-│   │       ├── *.csv
-│   └── valid-pats
-│       ├── pt_*
-│           ├── *.csv
-├── results
-│   ├── baseline
-│   │   ├── models
-│   │   │   ├── epoch_*.h5
-│   │   ├── hold-out-predictions
-│   │   │   ├── pt_*.csv
-│   │   └── validation-predictions
-│   │       ├── pt_*.csv
-│   ├── **Structure repeats when new model is made**
-└── submissions
-    ├── baseline.zip
-    ├── **Structure repeats when new model is made**   
-
-```
 
 ## Running the code
 Running the code in either platform should be straightforward. Any errors are likely the result of data being
