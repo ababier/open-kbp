@@ -47,35 +47,39 @@ class EvaluateDose:
         num_batches = self.data_loader.number_of_batches()
         dose_score_vec = np.zeros(num_batches)
 
-        # Change batch size to 1
-        self.data_loader.batch_size = 1  # Loads data related to ground truth patient information
-        if self.dose_loader is not None:
-            self.dose_loader.batch_size = 1  # Loads data related to ground truth patient information
-
-        for idx in tqdm.tqdm(range(num_batches)):
-            # Get roi masks for patient
-            self.get_constant_patient_features(idx)
-            # Get dose tensors for reference dose and evaluate criteria
-            reference_dose = self.get_patient_dose_tensor(self.data_loader)
-            if reference_dose is not None:
-                self.reference_dose_metric_df = self.calculate_metrics(self.reference_dose_metric_df, reference_dose)
-            # If a dose loader was provided, calculate the score
-            if self.dose_loader is not None:
-                new_dose = self.get_patient_dose_tensor(self.dose_loader)
-                # Make metric data frames
-                self.new_dose_metric_df = self.calculate_metrics(self.new_dose_metric_df, new_dose)
-                # Evaluate mean absolute error of 3D dose
-                dose_score_vec[idx] = np.sum(np.abs(reference_dose - new_dose)) / np.sum(self.possible_dose_mask)
-                # Save metrics at the patient level (this is a template for how DVH stream participants could save
-                # their files
-                # self.dose_metric_df.loc[self.patient_list[0]].to_csv('{}.csv'.format(self.patient_list[0]))
-
-        if self.dose_loader is not None:
-            dvh_score = np.nanmean(np.abs(self.reference_dose_metric_df - self.new_dose_metric_df).values)
-            dose_score = dose_score_vec.mean()
-            return dvh_score, dose_score
+        # Only make calculations if data_loader is not empty
+        if not self.data_loader.file_paths_list:
+            print('No patient information was given to calculate metrics')
         else:
-            print('No new dose provided. Metrics were only calculated for the provided dose.')
+            # Change batch size to 1
+            self.data_loader.batch_size = 1  # Loads data related to ground truth patient information
+            if self.dose_loader is not None:
+                self.dose_loader.batch_size = 1  # Loads data related to ground truth patient information
+
+            for idx in tqdm.tqdm(range(num_batches)):
+                # Get roi masks for patient
+                self.get_constant_patient_features(idx)
+                # Get dose tensors for reference dose and evaluate criteria
+                reference_dose = self.get_patient_dose_tensor(self.data_loader)
+                if reference_dose is not None:
+                    self.reference_dose_metric_df = self.calculate_metrics(self.reference_dose_metric_df, reference_dose)
+                # If a dose loader was provided, calculate the score
+                if self.dose_loader is not None:
+                    new_dose = self.get_patient_dose_tensor(self.dose_loader)
+                    # Make metric data frames
+                    self.new_dose_metric_df = self.calculate_metrics(self.new_dose_metric_df, new_dose)
+                    # Evaluate mean absolute error of 3D dose
+                    dose_score_vec[idx] = np.sum(np.abs(reference_dose - new_dose)) / np.sum(self.possible_dose_mask)
+                    # Save metrics at the patient level (this is a template for how DVH stream participants could save
+                    # their files
+                    # self.dose_metric_df.loc[self.patient_list[0]].to_csv('{}.csv'.format(self.patient_list[0]))
+
+            if self.dose_loader is not None:
+                dvh_score = np.nanmean(np.abs(self.reference_dose_metric_df - self.new_dose_metric_df).values)
+                dose_score = dose_score_vec.mean()
+                return dvh_score, dose_score
+            else:
+                print('No new dose provided. Metrics were only calculated for the provided dose.')
 
     def get_patient_dose_tensor(self, data_loader):
         """Retrieves a flattened dose tensor from the input data_loader.

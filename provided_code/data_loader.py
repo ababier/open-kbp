@@ -14,7 +14,6 @@ class DataLoader:
         :param patient_shape: the shape of the patient data
         :param shuffle: whether or not order should be randomized
         """
-
         # Set file_loader specific attributes
         self.rois = dict(oars=['Brainstem', 'SpinalCord', 'RightParotid', 'LeftParotid',
                                'Esophagus', 'Larynx', 'Mandible'], targets=['PTV56', 'PTV63', 'PTV70'])
