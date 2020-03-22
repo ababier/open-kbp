@@ -125,7 +125,7 @@ class EvaluateDose:
                 if roi in self.data_loader.rois['oars']:
                     if 'D_0.1_cc' in self.oar_eval_metrics:
                         # Find the fractional volume in 0.1cc to evaluate percentile
-                        fractional_volume_to_evaluate = np.maximum(100, 100 - voxels_in_tenth_of_cc/roi_size * 100)
+                        fractional_volume_to_evaluate = 100 - voxels_in_tenth_of_cc/roi_size * 100
                         metric_eval = np.percentile(roi_dose, fractional_volume_to_evaluate)
                         metric_df.at[self.patient_list[0], ('D_0.1_cc', roi)] = metric_eval
                     if 'mean' in self.oar_eval_metrics:
