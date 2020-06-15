@@ -166,7 +166,8 @@ teams (consisting of 54 people) made submissions. The top teams in this competit
 
 ### First place
 
-**Dose and DVH stream**: Fuxin Ji, Dashan Jiang, Qi Wu, and Shuolin Liu, *LSL AnHui University*, Anhui University, China.
+**Dose and DVH Stream**: Fuxin Ji, Dashan Jiang, Qi Wu, and Shuolin Liu, *LSL AnHui University*, Anhui University
+, China.
 
 ### Runners-up
 
@@ -179,8 +180,7 @@ Medical University of Vienna, Austria.
 ### Final testing phase leaderboard 
 This leaderboard contains the final results of this challenge, which is the first controlled and blinded test of KBP
  method implementations from several institutions. Submissions to this leaderboard can still be made on CodaLab, however,
-  since the results are no longer blinded there is no way to ensure the test set was used as intended (i.e
-  ., without any peaking). 
+  since the results are no longer blinded there is no way to ensure the test set was used as intended (i.e., without any peaking). 
  
  ![](read-me-images/final_leaderboard.png)
 
