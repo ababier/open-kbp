@@ -159,10 +159,10 @@ Alternatively, you may run the notebook in Jupyter Notebook or Jupyter Lab local
   
   
 ## Competition results
-The OpenKBP Challenge attracted 195 participants from over 28 counties. The competition started February 21, 2020 and
- concluded on on June 1st. A total of 1750 submissions were made to the 
+The OpenKBP Challenge attracted 195 participants from 28 counties. The competition started February 21, 2020 and
+ concluded on June 1, 2020. A total of 1750 submissions were made to the 
 validation phase by the 44 teams (consisting of 73 people) who made at least 1 submission. In the testing phase, 28 
-teams (consisting of 54 people) made submissions. The top teams in this competition were:
+teams (consisting of 54 people) made submissions. The top teams in this competition are highlighted below.
 
 ### First place
 
