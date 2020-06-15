@@ -22,6 +22,10 @@ The _open-kbp_ repository provides code that is intended to get participants of 
 - [Running the code...](#running-the-code)
   + [in Colab](#running-the-code-in-colab)
   + [on a local machine](#running-the-code-on-local-machine)
+- [Competition results](#competition-results)
+  + [First place](#first-place)
+  + [Runners-up](#runners-up)
+  + [Final testing phase leaderboard](#final-testing-phase-leaderboard)
 - [Competition organizers](#competition-organizers)
 
 ## What this code does
@@ -152,6 +156,33 @@ Alternatively, you may run the notebook in Jupyter Notebook or Jupyter Lab local
  commands related to Google Drive and changing the paths for where the provided data is stored and where the results
   are
   saved.
+  
+  
+## Competition results
+The OpenKBP Challenge attracted 195 participants from over 28 counties. A total of 1750 submissions were made to the 
+validation phase by the 44 teams (consisting of 73 people) who made at least 1 submission. In the testing phase, 28 
+teams (consisting of 54 people) made submissions. The top teams in this competition were:
+
+### First place
+
+**Dose and DVH stream**: Fuxin Ji, Dashan Jiang, Qi Wu, and Shuolin Liu, *LSL AnHui University*, Anhui University
+, China.
+
+### Runners-up
+
+**Dose Stream**: Carlos Cardenas, Skylar Gay, Mary Gronberg, Tucker Netherton, and Dong Joo Rhee, 
+*SuperPod*, MD Anderson Cancer Center, United States.
+
+**DVH Stream**: Erik Faustmann, Lukas Fetty, Gerd Heilemann, and Christian Ramsl, *PTV - Prediction Team Vienna*, 
+Medical University of Vienna, Austria.
+
+### Final testing phase leaderboard 
+This leaderboard contains the final results of this challenge, which is the first controlled and blinded test of KBP
+ method implementations from several institutions. Submissions to this leaderboard can still be made on CodaLab, however
+ , since the results are no longer blinded there is no way to ensure the test set was used as intended (i.e., without
+  any peaking). 
+ 
+ ![](read-me-images/final_leaderboard.png)
 
 ## Competition organizers
 OpenKBP is co-organized by Aaron Babier, Binghao Zhang, Rafid Mahmood, and Timothy Chan (University of Toronto, Canada);

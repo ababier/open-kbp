@@ -10,8 +10,7 @@ from provided_code.network_functions import PredictionModel
 if __name__ == '__main__':
     # Define project directories
     # TODO: Must define the path of where the data is stored.
-    # primary_directory = '/home/user_name/open-kbp'  # directory where everything is stored
-    primary_directory = '/Users/aaronbabier/Downloads/public_dat-2'
+    primary_directory = '/home/user_name/open-kbp'  # directory where everything is stored
     # Define directory where given data is stored
     training_data_dir = '{}/train-pats'.format(primary_directory)
     validation_data_dir = '{}/validation-pats-no-dose'.format(primary_directory)
