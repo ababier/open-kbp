@@ -17,7 +17,6 @@ The _open-kbp_ repository provides code that is intended to get participants of 
 - [Prerequisites](#prerequisites)
 - [Created folder structure](#created-folder-structure)
 - [Getting started...](#getting-started)
-  + [Data Access](#data-access)
   + [in Colab](#getting-started-in-colab)
   + [on a local machine](#getting-started-on-a-local-machine)
 - [Running the code...](#running-the-code)
