@@ -93,8 +93,7 @@ open-kbp
 ```
 
 ## Getting started
- Sign up for the OpenKBP competition of [CodaLab](https://competitions.codalab.org/competitions/?q=openkbp
-).
+ Sign up for the OpenKBP competition of [CodaLab](https://competitions.codalab.org/competitions/?q=openkbp).
    
 ### Getting started in Colab
 This should be the simplest way to compete in OpenKBP because the software required for dose prediction is installed
