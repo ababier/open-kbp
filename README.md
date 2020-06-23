@@ -100,7 +100,7 @@ This should be the simplest way to compete in OpenKBP because the software requi
  in the cloud. It also means you can be competitive in OpenKBP without expensive hardware. All you need is a standard
   Google account with at least 2GB of available storage in your [Google Drive](https://drive.google.com). 
 
-1. [Download](https://github.com/ababier/open-kbp-competition/archive/master.zip) this repository 
+1. [Download](https://github.com/ababier/open-kbp/archive/master.zip) this repository 
 2. Make a directory in the _main_ directory of your Google Drive and name it _open-kbp_, henceforth referred to as
  the open-kbp directory.
 3. Upload all the files in this repository to your open-kbp
@@ -123,8 +123,7 @@ This should be the simplest way to compete in OpenKBP because the software requi
     ```
 2. Clone this repository, navigate to its directory, and install the requirements. Note, that to run Tensorflow 2.1
  with a GPU, you may need to build Tensorflow 2.1 from source. The official instructions to build from source are 
- [here ](https://www.tensorflow.org/install/source), but I found the third party guide  
- [here](https://gist.github.com/kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03) more useful. 
+ [here ](https://www.tensorflow.org/install/source), but I found the third party guide [here](https://gist.github.com/kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03) more useful. 
 
     ```
     git clone https://github.com/ababier/open-kbp
