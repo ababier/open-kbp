@@ -17,6 +17,7 @@ The _open-kbp_ repository provides code that is intended to get participants of 
 - [Prerequisites](#prerequisites)
 - [Created folder structure](#created-folder-structure)
 - [Getting started...](#getting-started)
+  + [Data Access](#data-access)
   + [in Colab](#getting-started-in-colab)
   + [on a local machine](#getting-started-on-a-local-machine)
 - [Running the code...](#running-the-code)
@@ -60,10 +61,10 @@ The following are required to run the given notebook, however, for the competiti
 ## Created folder structure
 This repository will create a file structure that branches from a directory called _open-kbp_. The file structure
 will keep information about predictions from a model (called baseline in this example) and the model itself in the
- _results_ directory. It assume that the data provided for the OpenKBP competition is in a directory called 
- _provided-data_. This code will also make a directory called _submissions_ to house the zip files that can be
-  submitted to CodaLab for validation set evaluation (this code will generalize to test data once the test data is
-   released). Use this folder tree as a reference (it will more or less build itself).
+ _results_ directory. All the data from the OpenKBP competition (with the original train/validation/test splits) is 
+  available under the directory called _provided-data_. This code will also make a directory called _submissions_ to
+   house the zip files that can be submitted to the leader boards on CodaLab. Use this folder tree as a reference 
+   (it will more or less build itself).
    
 ```bash
 open-kbp
@@ -71,16 +72,19 @@ open-kbp
 │   ├── train-pats
 │   │   ├── pt_*
 │   │       ├── *.csv
-│   └── valid-pats
+│   ├── valid-pats
+│   │   ├── pt_*
+│   │       ├── *.csv
+│   └── test-pats
 │       ├── pt_*
 │           ├── *.csv
 ├── results
 │   ├── baseline
 │   │   ├── models
 │   │   │   ├── epoch_*.h5
-│   │   ├── hold-out-predictions
+│   │   ├── hold-out-validation-predictions
 │   │   │   ├── pt_*.csv
-│   │   └── validation-predictions
+│   │   └── hold-out-testing-predictions
 │   │       ├── pt_*.csv
 │   ├── **Structure repeats when new model is made**
 └── submissions
@@ -90,10 +94,8 @@ open-kbp
 ```
 
 ## Getting started
-Sign up for the OpenKBP competition of [CodaLab](https://competitions.codalab.org/competitions/?q=openkbp). Once
- registered, the data will be available for download from the 
- [competition website](https://competitions.codalab.org/competitions/22880#participate). Extract the data before 
- getting started with your chosen platform (i.e., Colab or local machine).
+ Sign up for the OpenKBP competition of [CodaLab](https://competitions.codalab.org/competitions/?q=openkbp
+).
    
 ### Getting started in Colab
 This should be the simplest way to compete in OpenKBP because the software required for dose prediction is installed
@@ -103,17 +105,15 @@ This should be the simplest way to compete in OpenKBP because the software requi
 1. [Download](https://github.com/ababier/open-kbp-competition/archive/master.zip) this repository 
 2. Make a directory in the _main_ directory of your Google Drive and name it _open-kbp_, henceforth referred to as
  the open-kbp directory.
-3. Upload the folder containing all competition data to the open-kbp directory. 
-4. Upload the files in this repository (i.e., provided_code directory and the _main\_notebook.ipynb_ notebook file) to
- your open-kbp
+3. Upload all the files in this repository to your open-kbp
  directory. It takes a while for the files to copy to Google Drive, and there is a small lag between when they're
   uploaded and when Colab can access them. We recommend you wait an extra 15 minutes after the data is uploaded before
    continuing.
-5. Right-click the notebook file, and select: Open with > Google Colaboratory. This should open up a
+4. Right-click the notebook file, and select: Open with > Google Colaboratory. This should open up a
  window where you can run the notebook in the cloud (for free!). 
-6. In the Google Colab toolbar select: Runtime > Change Runtime. This will open another popup where you should ensure
+5. In the Google Colab toolbar select: Runtime > Change Runtime. This will open another popup where you should ensure
  the runtime type is Python 3 and the hardware accelerator is GPU.
-7. Run the first cell in the notebook to mount your google drive, and follow the prompts, which should include signing
+6. Run the first cell in the notebook to mount your google drive, and follow the prompts, which should include signing
  into your Google account. This cell will give Google Colab access to your Google Drive and your open-kbp directory.
  Keep in mind that there is sometimes a lag between what you see in your Drive and what you see in Colab. 
 
@@ -187,5 +187,5 @@ This leaderboard contains the final results of this challenge, which is the firs
 ## Competition organizers
 OpenKBP is co-organized by Aaron Babier, Binghao Zhang, Rafid Mahmood, and Timothy Chan (University of Toronto, Canada);
 Andrea McNiven and Thomas Purdie (Princess Margaret Cancer Center, Canada); Kevin Moore (UC San Diego, USA). This
- challenge is supported by
+ challenge was supported by
 [The American Association of Physicists in Medicine](https://www.aapm.org/GrandChallenge/OpenKBP/). 
