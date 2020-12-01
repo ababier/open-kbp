@@ -181,10 +181,9 @@ University, China. [\[GitHub Repository\]](https://github.com/LSL000UD/RTDosePre
 **Dose Stream**: Mary P. Gronberg, Skylar S. Gay, Tucker J. Netherton, Dong Joo Rhee, Laurence E. Court, Carlos E. 
 Cardenas, *SuperPod*, MD Anderson Cancer Center, United States.
 
-
 **DVH Stream**: Lukas Zimmermann, Erik Faustmann, Christian Ramsl, Dietmar Georg, Gerd Heilemann, *PTV - Prediction
  Team Vienna*, Medical University of Vienna, Austria.
-
+ 
 ### Final testing phase leaderboard 
 This leaderboard contains the final results of this challenge, which is the first controlled and blinded test of KBP
  method implementations from several institutions. Submissions to this leaderboard can still be made on CodaLab, however,
