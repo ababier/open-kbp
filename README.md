@@ -2,17 +2,18 @@
 
 ![](read-me-images/aapm.png)
   
-The _open-kbp_ repository provides code that is intended to get participants of the OpenKBP Challenge
- started with dose prediction. The repository can be used on either a local machine or in the cloud (for free) using 
+The _open-kbp_ repository provides code that is intended to get participants of the OpenKBP Challenge started with
+dose prediction. The repository can be used on either a local machine or in the cloud (for free) using 
 [Google Colab](https://colab.research.google.com).
 
  ![](read-me-images/pipeline.png)
 
 **Advice**: Google Colab is a great way to compete in OpenKBP without putting a burden on your existing hardware. The
- service provides high-quality CPUs and GPUs for free, however, your sessions are limited to consecutive 12 hours
+service provides high-quality CPUs and GPUs for free, however, your sessions are limited to consecutive 12 hours
   [[Frequently asked questions]](https://research.google.com/colaboratory/faq.html). 
 
 # Table of Contents
+- [Data](#data)
 - [What this code does](#what-this-code-does)
 - [Prerequisites](#prerequisites)
 - [Created folder structure](#created-folder-structure)
@@ -27,6 +28,15 @@ The _open-kbp_ repository provides code that is intended to get participants of 
   + [Runners-up](#runners-up)
   + [Final testing phase leaderboard](#final-testing-phase-leaderboard)
 - [Competition organizers](#competition-organizers)
+- [Citation](#citation)
+
+## Data
+The details of the provided data are available in our paper [OpenKBP: The Open-Access 
+Knowledge-Based Planning Grand Challenge](https://arxiv.org/abs/2011.14076). In short, we provide data for 340
+patients who were treated for head-and-neck cancer with intensity modulated radiation therapy. The data is split into 
+training ($n=200$), validation ($n=40$), and testing ($n=100$) sets. Every patient in these datasets has a
+dose distribution, CT images, structure masks, a feasible dose mask (i.e., mask of where dose can be non-zero), and
+voxel dimensions.
 
 ## What this code does
 This code will train a small neural network to predict dose. There are five .py files that are required to run the
@@ -46,7 +56,7 @@ This code will train a small neural network to predict dose. There are five .py 
 
 ## Prerequisites
 The following are required to run the given notebook, however, for the competition you may use any hardware or
- software you'd like. 
+software you'd like. 
 
 ### For running on Google Colab
 - Standard Google account 
@@ -123,8 +133,8 @@ This should be the simplest way to compete in OpenKBP because the software requi
     ```
 2. Clone this repository, navigate to its directory, and install the requirements. Note, that to run Tensorflow 2.1
  with a GPU, you may need to build Tensorflow 2.1 from source. The official instructions to build from source are 
- [here ](https://www.tensorflow.org/install/source), but I found the third party guide  
- [here](https://gist.github.com/kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03) more useful. 
+ [here ](https://www.tensorflow.org/install/source), but I found the third party guide [here](https://gist.github.com
+ /kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03) more useful. 
 
     ```
     git clone https://github.com/ababier/open-kbp
@@ -152,8 +162,7 @@ Run the main file in your newly created virtual environment.
     ```
 Alternatively, you may run the notebook in Jupyter Notebook or Jupyter Lab locally, but only after commenting out the
  commands related to Google Drive and changing the paths for where the provided data is stored and where the results
-  are
-  saved.
+  are saved.
   
   
 ## Competition results
@@ -164,16 +173,17 @@ teams (consisting of 54 people) made submissions. The top teams in this competit
 
 ### First place
 
-**Dose and DVH Stream**: Fuxin Ji, Dashan Jiang, Qi Wu, and Shuolin Liu, *LSL AnHui University*, Anhui University
-, China.
+**Dose and DVH Stream**: Shuolin Liu, Jingjing Zhang, Teng Li1, Hui Yan, Jianfei Liu, *LSL AnHui University*, Anhui
+University, China. [\[GitHub Repository\]](https://github.com/LSL000UD/RTDosePrediction)
 
 ### Runners-up
 
-**Dose Stream**: Carlos Cardenas, Skylar Gay, Mary Gronberg, Tucker Netherton, and Dong Joo Rhee, 
-*SuperPod*, MD Anderson Cancer Center, United States.
+**Dose Stream**: Mary P. Gronberg, Skylar S. Gay, Tucker J. Netherton, Dong Joo Rhee, Laurence E. Court, Carlos E. 
+Cardenas, *SuperPod*, MD Anderson Cancer Center, United States.
 
-**DVH Stream**: Erik Faustmann, Lukas Fetty, Gerd Heilemann, and Christian Ramsl, *PTV - Prediction Team Vienna*, 
-Medical University of Vienna, Austria.
+
+**DVH Stream**: Lukas Zimmermann, Erik Faustmann, Christian Ramsl, Dietmar Georg, Gerd Heilemann, *PTV - Prediction
+ Team Vienna*, Medical University of Vienna, Austria.
 
 ### Final testing phase leaderboard 
 This leaderboard contains the final results of this challenge, which is the first controlled and blinded test of KBP
@@ -183,7 +193,12 @@ This leaderboard contains the final results of this challenge, which is the firs
  ![](read-me-images/final_leaderboard.png)
 
 ## Competition organizers
-OpenKBP is co-organized by Aaron Babier, Binghao Zhang, Rafid Mahmood, and Timothy Chan (University of Toronto, Canada);
+OpenKBP is organized by Aaron Babier, Binghao Zhang, Rafid Mahmood, and Timothy Chan (University of Toronto, Canada);
 Andrea McNiven and Thomas Purdie (Princess Margaret Cancer Center, Canada); Kevin Moore (UC San Diego, USA). This
  challenge was supported by
 [The American Association of Physicists in Medicine](https://www.aapm.org/GrandChallenge/OpenKBP/). 
+
+## Citation
+A. Babier, B. Zhang, R. Mahmood, K.L. Moore, T.G. Purdie, A.L. McNiven, T.C.Y. Chan, "OpenKBP: The 
+Open-Access Knowledge-Based Planning Grand Challenge," under review at *Medical Physics*.
+[\[arXiv\]](https://arxiv.org/abs/2011.14076)
