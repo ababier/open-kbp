@@ -33,7 +33,7 @@ service provides high-quality CPUs and GPUs for free, however, your sessions are
 ## Data
 The details of the provided data are available in our paper [OpenKBP: The Open-Access 
 Knowledge-Based Planning Grand Challenge](https://arxiv.org/abs/2011.14076). In short, we provide data for 340
-patients who were treated for head-and-neck cancer with i$ntensity modulated radiation therapy. The data is split into 
+patients who were treated for head-and-neck cancer with intensity modulated radiation therapy. The data is split into 
 training (*n*=200), validation (*n*=40), and testing (*n*=100) sets. Every patient in these datasets has a
 dose distribution, CT images, structure masks, a feasible dose mask (i.e., mask of where dose can be non-zero), and
 voxel dimensions.
