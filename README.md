@@ -133,8 +133,8 @@ This should be the simplest way to compete in OpenKBP because the software requi
     ```
 2. Clone this repository, navigate to its directory, and install the requirements. Note, that to run Tensorflow 2.1
  with a GPU, you may need to build Tensorflow 2.1 from source. The official instructions to build from source are 
- [here ](https://www.tensorflow.org/install/source), but I found the third party guide [here](https://gist.github.com
- /kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03) more useful. 
+ [here ](https://www.tensorflow.org/install/source), but I found the third party guide [here](https://gist.github.com/kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03) 
+ more useful. 
 
     ```
     git clone https://github.com/ababier/open-kbp
