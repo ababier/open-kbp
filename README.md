@@ -200,6 +200,5 @@ Andrea McNiven and Thomas Purdie (Princess Margaret Cancer Center, Canada); Kevi
 ## Citation
 Please use our paper as the citation for this dataset or code repository:
 
-A. Babier, B. Zhang, R. Mahmood, K.L. Moore, T.G. Purdie, A.L. McNiven, T.C.Y. Chan, "OpenKBP: The 
-Open-Access Knowledge-Based Planning Grand Challenge," under review at *Medical Physics*.
-[\[arXiv\]](https://arxiv.org/abs/2011.14076)
+A. Babier, B. Zhang, R. Mahmood, K.L. Moore, T.G. Purdie, A.L. McNiven, T.C.Y. Chan, "[\[OpenKBP: The 
+open-access knowledge-based planning grand challenge and dataset\]](https://aapm.onlinelibrary.wiley.com/doi/epdf/10.1002/mp.14845)," *Medical Physics*, 2021.
