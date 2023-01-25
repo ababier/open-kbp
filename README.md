@@ -51,8 +51,8 @@ The following are required to run the given notebook, however, you may use any h
 
 ### For running on a local machine
 - Linux
-- Python 3
-- NVIDIA GPU with CUDA and CuDNN
+- Python 3.10.9
+- NVIDIA GPU with CUDA and CuDNN (recommended)
 
 
 ## Created folder structure
@@ -74,9 +74,9 @@ open-kbp
 │   ├── baseline
 │   │   ├── models
 │   │   │   ├── epoch_*.h5
-│   │   ├── hold-out-validation-predictions
+│   │   ├── validation-predictions
 │   │   │   ├── pt_*.csv
-│   │   └── hold-out-testing-predictions
+│   │   └── test-predictions
 │   │       ├── pt_*.csv
 │   ├── **Structure repeats when new model is made**
 └── submissions
@@ -91,7 +91,7 @@ open-kbp
 ### Getting started in Colab
 This should be the simplest way to compete in OpenKBP because the software required for dose prediction is installed in the cloud. It also means you can be competitive in OpenKBP without expensive hardware. All you need is a standard Google account with at least 2GB of available storage in your [Google Drive](https://drive.google.com). 
 
-1. [Download](https://github.com/ababier/open-kbp-competition/archive/master.zip) this repository 
+1. [Download](https://github.com/ababier/open-kbp/archive/master.zip) this repository 
 2. Make a directory in the _main_ directory of your Google Drive and name it _open-kbp_, henceforth referred to as the open-kbp directory.
 3. Upload all the files in this repository to your open-kbp directory. It takes a while for the files to copy to Google Drive, and there is a small lag between when they're uploaded and when Colab can access them. We recommend you wait an extra 15 minutes after the data is uploaded before continuing.
 4. Right-click the notebook file, and select: Open with > Google Colaboratory. This should open up a window where you can run the notebook in the cloud (for free!). 

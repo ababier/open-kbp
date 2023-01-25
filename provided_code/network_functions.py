@@ -1,184 +1,127 @@
-""" This class inherits a network architecture and performs various functions on a define architecture like training
- and predicting"""
-
 import os
+from pathlib import Path
+from typing import Optional
 
 import numpy as np
 import pandas as pd
-import tqdm
-from tensorflow.keras.models import load_model
-from tensorflow.keras.optimizers import Adam
+from keras.models import load_model
+from keras.optimizers.optimizer_v2.adam import Adam
 
-from provided_code.general_functions import get_paths, make_directory_and_return_path, sparse_vector_function
+from provided_code.data_loader import DataLoader
 from provided_code.network_architectures import DefineDoseFromCT
+from provided_code.utils import get_paths, sparse_vector_function
 
 
 class PredictionModel(DefineDoseFromCT):
-
-    def __init__(self, data_loader, results_patent_path, model_name, stage='training'):
+    def __init__(self, data_loader: DataLoader, results_patent_path: Path, model_name: str, stage: str) -> None:
         """
-        Initialize the Prediction model class
         :param data_loader: An object that loads batches of image data
         :param results_patent_path: The path at which all results and generated models will be saved
         :param model_name: The name of your model, used when saving and loading data
+        :param stage: Identify stage of model development (train, validation, test)
         """
+        super().__init__(
+            data_shapes=data_loader.data_shapes,
+            initial_number_of_filters=1,  # Recommend increasing to 64 +
+            filter_size=(4, 4, 4),
+            stride_size=(2, 2, 2),
+            gen_optimizer=Adam(learning_rate=0.0002, beta_1=0.5, beta_2=0.999),
+        )
+
         # set attributes for data shape from data loader
-        self.data_loader = data_loader
-        self.patient_shape = data_loader.patient_shape
-        self.full_roi_list = data_loader.full_roi_list
+        self.generator = None
         self.model_name = model_name
+        self.data_loader = data_loader
+        self.full_roi_list = data_loader.full_roi_list
 
         # Define training parameters
-        self.epoch_start = 0  # Minimum epoch (overwritten during initialization if a newer model exists)
-        self.epoch_last = 200  # When training will stop
-
-        # Define image sizes
-        self.dose_shape = (*self.patient_shape, 1)
-        self.ct_shape = (*self.patient_shape, 1)
-        self.roi_masks_shape = (*self.patient_shape, len(self.full_roi_list))
-
-        # Define filter and stride lengths
-        self.filter_size = (4, 4, 4)
-        self.stride_size = (2, 2, 2)
-
-        # Define the initial number of filters in the model (first layer)
-        self.initial_number_of_filters = 1  # 64
-
-        # Define model optimizer
-        self.gen_optimizer = Adam(lr=0.0002, decay=0.001, beta_1=0.5, beta_2=0.999)
-
-        # Define place holders for model
-        self.generator = None
+        self.current_epoch = 0
+        self.last_epoch = 200
 
         # Make directories for data and models
-        model_results_path = '{}/{}'.format(results_patent_path, model_name)
-        self.model_dir = make_directory_and_return_path('{}/models'.format(model_results_path))
-        self.prediction_dir = '{}/{}-predictions'.format(model_results_path, stage)
+        model_results_path = results_patent_path / model_name
+        self.model_dir = model_results_path / "models"
+        self.model_dir.mkdir(parents=True, exist_ok=True)
+        self.prediction_dir = model_results_path / f"{stage}-predictions"
+        self.prediction_dir.mkdir(parents=True, exist_ok=True)
 
         # Make template for model path
-        self.model_path_template = '{}/epoch_'.format(self.model_dir)
+        self.model_path_template = self.model_dir / "epoch_"
 
-    def train_model(self, epochs=200, save_frequency=5, keep_model_history=2):
+    def train_model(self, epochs: int = 200, save_frequency: int = 5, keep_model_history: int = 2) -> None:
         """
-        Train the model over several epochs
         :param epochs: the number of epochs the model will be trained over
         :param save_frequency: how often the model will be saved (older models will be deleted to conserve storage)
-        :param keep_model_history: how many models back are kept (anything older than
-        save_frequency*keep_model_history epochs)
-        :return: None
+        :param keep_model_history: how many models are kept on a rolling basis (deletes older than save_frequency * keep_model_history epochs)
         """
-        # Define new models, or load most recent model if model already exists
-        self.epoch_last = epochs
+        self._set_epoch_start()
+        self.last_epoch = epochs
         self.initialize_networks()
+        if self.current_epoch == epochs:
+            print(f"The model has already been trained for {epochs}, so no more training will be done.")
+            return
+        self.data_loader.set_mode("training_model")
+        for epoch in range(self.current_epoch, epochs):
+            self.current_epoch = epoch
+            print(f"Beginning epoch {self.current_epoch}")
+            self.data_loader.shuffle_data()
 
-        # Check if training has already finished
-        if self.epoch_start == epochs:
+            for idx, batch in enumerate(self.data_loader.get_batches()):
+                model_loss = self.generator.train_on_batch([batch.ct, batch.structure_masks], [batch.dose])
+                print(f"Model loss at epoch {self.current_epoch} batch {idx} is {model_loss:.3f}")
+
+            self.manage_model_storage(save_frequency, keep_model_history)
+
+    def _set_epoch_start(self) -> None:
+        all_model_paths = get_paths(self.model_dir, extension="h5")
+        for model_path in all_model_paths:
+            *_, epoch_number = model_path.stem.split("epoch_")
+            if epoch_number.isdigit():
+                self.current_epoch = max(self.current_epoch, int(epoch_number))
+
+    def initialize_networks(self) -> None:
+        if self.current_epoch >= 1:
+            self.generator = load_model(self._get_generator_path(self.current_epoch))
+        else:
+            self.generator = self.define_generator()
+
+    def manage_model_storage(self, save_frequency: int = 1, keep_model_history: Optional[int] = None) -> None:
+        """
+        Manage the model storage while models are trained. Note that old models are deleted based on how many models the users has asked to keep.
+        We overwrite old files (rather than deleting them) to ensure the Collab users don't fill up their Google Drive trash.
+        :param save_frequency: how often the model will be saved (older models will be deleted to conserve storage)
+        :param keep_model_history: how many models back are kept (older models will be deleted to conserve storage)
+        """
+        effective_epoch_number = self.current_epoch + 1  # Epoch number + 1 because we're at the start of the next epoch
+        if 0 < np.mod(effective_epoch_number, save_frequency) and effective_epoch_number != self.last_epoch:
+            Warning(f"Model at the end of epoch {self.current_epoch} was not saved because it is skipped when save frequency {save_frequency}.")
             return
 
-        else:
-            # Start training GAN
-            num_batches = self.data_loader.number_of_batches()
-            for e in range(self.epoch_start, epochs):
-                # Begin a new epoch
-                print('epoch number {}'.format(e))
-                self.data_loader.on_epoch_end()  # Shuffle the data after each epoch
-                for i in tqdm.tqdm(range(num_batches)):
-                    # Load a subset of the data and train the network with the data
-                    self.train_network_on_batch(i, e)
+        # The code below is clunky and was only included to bypass the Google Drive trash, which fills quickly with normal save/delete functions
+        epoch_to_overwrite = effective_epoch_number - keep_model_history * (save_frequency or float("inf"))
+        if epoch_to_overwrite >= 0:
+            initial_model_path = self._get_generator_path(epoch_to_overwrite)
+            self.generator.save(initial_model_path)
+            os.rename(initial_model_path, self._get_generator_path(effective_epoch_number))  # Helps bypass Google Drive trash
+        else:  # Save via more conventional method because there is no model to overwrite
+            self.generator.save(self._get_generator_path(effective_epoch_number))
 
-                # Create epoch label and save models at the specified save frequency
-                current_epoch = e + 1
-                if 0 == np.mod(current_epoch, save_frequency):
-                    self.save_model_and_delete_older_models(current_epoch, save_frequency, keep_model_history)
+    def _get_generator_path(self, epoch: Optional[int] = None) -> Path:
+        epoch = epoch or self.current_epoch
+        return self.model_dir / f"epoch_{epoch}.h5"
 
-    def save_model_and_delete_older_models(self, current_epoch, save_frequency, keep_model_history):
-        """
-        Save the current model and delete old models, based on how many models the user has asked to keep. We overwrite
-        files (rather than deleting them) to ensure the user's trash doesn't fill up.
-        :param current_epoch: the current epoch number that is being saved
-        :param save_frequency: how often the model will be saved (older models will be deleted to conserve storage)
-        :param keep_model_history: how many models back are kept (anything older than
-        save_frequency*keep_model_history epochs)
-        """
-
-        # Save the model to a temporary path
-        temporary_model_path = '{}_temp.h5'.format(self.model_path_template)
-        self.generator.save(temporary_model_path)
-        # Define the epoch that should be over written
-        epoch_to_overwrite = current_epoch - keep_model_history * save_frequency
-        # Make appropriate path to save model at
-        if epoch_to_overwrite > 0:
-            model_to_delete_path = '{}{}.h5'.format(self.model_path_template, epoch_to_overwrite)
-        else:
-            model_to_delete_path = '{}{}.h5'.format(self.model_path_template, current_epoch)
-        # Save model
-        os.rename(temporary_model_path, model_to_delete_path)
-        # The code below is a hack to ensure the Google Drive trash doesn't fill up
-        if epoch_to_overwrite > 0:
-            final_save_model_path = '{}{}.h5'.format(self.model_path_template, current_epoch)
-            os.rename(model_to_delete_path, final_save_model_path)
-
-    def initialize_networks(self):
-        """
-        Load the newest model, or if no model exists with the appropriate name a new model will be created.
-        :return:
-        """
-        # Initialize variables for models
-        all_models = get_paths(self.model_dir, ext='h5')
-
-        # Get last epoch of existing models if they exist
-        for model_name in all_models:
-            model_epoch_number = model_name.split(self.model_path_template)[-1].split('.h5')[0]
-            if model_epoch_number.isdigit():
-                self.epoch_start = max(self.epoch_start, int(model_epoch_number))
-
-        # Build new models or load most recent old model if one exists
-        if self.epoch_start >= self.epoch_last:
-            print('Model fully trained, loading model from epoch {}'.format(self.epoch_last))
-            return 0, 0, 0, self.epoch_last
-
-        elif self.epoch_start >= 1:
-            # If models exist then load them
-            self.generator = load_model('{}{}.h5'.format(self.model_path_template, self.epoch_start))
-        else:
-            # If models don't exist then define them
-            self.define_generator()
-
-    def train_network_on_batch(self, batch_index, epoch_number):
-        """Loads a sample of data and uses it to train the model
-        :param batch_index: The batch index
-        :param epoch_number: The epoch
-        """
-        # Load images
-        image_batch = self.data_loader.get_batch(batch_index)
-
-        # Train the generator model with the batch
-        model_loss = self.generator.train_on_batch([image_batch['ct'], image_batch['structure_masks']],
-                                                   image_batch['dose'])
-
-        print('Model loss at epoch {} batch {} is {:.3f}'.format(epoch_number, batch_index, model_loss))
-
-    def predict_dose(self, epoch=1):
-        """Predicts the dose for the given epoch number, this will only work if the batch size of the data loader
-        is set to 1.
-        :param epoch: The epoch that should be loaded to make predictions
-        """
-        # Define new models, or load most recent model if model already exists
-        self.generator = load_model('{}{}.h5'.format(self.model_path_template, epoch))
+    def predict_dose(self, epoch: int = 1):
+        """Predicts the dose for the given epoch number"""
+        self.generator = load_model(self._get_generator_path(epoch))
         os.makedirs(self.prediction_dir, exist_ok=True)
-        # Use generator to predict dose
-        number_of_batches = self.data_loader.number_of_batches()
-        print('Predicting dose')
-        for idx in tqdm.tqdm(range(number_of_batches)):
-            image_batch = self.data_loader.get_batch(idx)
+        self.data_loader.set_mode("dose_prediction")
 
-            # Get patient ID and make a prediction
-            pat_id = image_batch['patient_list'][0]
-            dose_pred_gy = self.generator.predict([image_batch['ct'], image_batch['structure_masks']])
-            dose_pred_gy = dose_pred_gy * image_batch['possible_dose_mask']
-            # Prepare the dose to save
-            dose_pred_gy = np.squeeze(dose_pred_gy)
-            dose_to_save = sparse_vector_function(dose_pred_gy)
-            dose_df = pd.DataFrame(data=dose_to_save['data'].squeeze(), index=dose_to_save['indices'].squeeze(),
-                                   columns=['data'])
-            dose_df.to_csv('{}/{}.csv'.format(self.prediction_dir, pat_id))
+        print("Predicting dose with generator.")
+        for batch in self.data_loader.get_batches():
+            dose_pred = self.generator.predict([batch.ct, batch.structure_masks])
+            dose_pred = dose_pred * batch.possible_dose_mask
+            dose_pred = np.squeeze(dose_pred)
+            dose_to_save = sparse_vector_function(dose_pred)
+            dose_df = pd.DataFrame(data=dose_to_save["data"].squeeze(), index=dose_to_save["indices"].squeeze(), columns=["data"])
+            (patient_id,) = batch.patient_list
+            dose_df.to_csv("{}/{}.csv".format(self.prediction_dir, patient_id))
