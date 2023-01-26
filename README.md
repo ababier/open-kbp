@@ -1,3 +1,7 @@
+# Original Competition Branch
+This branch contains the original packages that were available when this competition launched. The data was added after the competition to improve usability (participants had no access to validation/test dose during competition). We recommend using the master branch for future research because this branch is no longer maintained.
+
+
 # OpenKBP Grand Challenge 
 
 ![](read-me-images/aapm.png)
