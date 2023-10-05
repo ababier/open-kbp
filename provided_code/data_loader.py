@@ -3,7 +3,7 @@ from typing import Dict, Iterator, List, Optional, Union
 
 import numpy as np
 from more_itertools import windowed
-from numpy._typing import NDArray
+from numpy.typing import NDArray
 from tqdm import tqdm
 
 from provided_code.batch import DataBatch
