@@ -1,5 +1,5 @@
 """ Neural net architectures """
-from typing import Optional, Tuple
+from typing import Optional
 
 from keras.engine.keras_tensor import KerasTensor
 from keras.layers import Activation, AveragePooling3D, Conv3D, Conv3DTranspose, Input, LeakyReLU, SpatialDropout3D, concatenate
@@ -18,8 +18,8 @@ class DefineDoseFromCT:
         self,
         data_shapes: DataShapes,
         initial_number_of_filters: int,
-        filter_size: Tuple[int, int, int],
-        stride_size: Tuple[int, int, int],
+        filter_size: tuple[int, int, int],
+        stride_size: tuple[int, int, int],
         gen_optimizer: OptimizerV2,
     ):
         self.data_shapes = data_shapes

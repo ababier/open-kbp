@@ -1,8 +1,9 @@
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional
+from typing import Dict, Iterator, List, Optional, Union
 
 import numpy as np
 from more_itertools import windowed
+from numpy._typing import NDArray
 from tqdm import tqdm
 
 from provided_code.batch import DataBatch
@@ -45,11 +46,11 @@ class DataLoader:
         for batch_paths in tqdm(complete_batches):
             yield self.prepare_data(batch_paths)
 
-    def get_patients(self, patient_list: List[str]):
+    def get_patients(self, patient_list: List[str]) -> DataBatch:
         file_paths_to_load = [self.paths_by_patient_id[patient] for patient in patient_list]
         return self.prepare_data(file_paths_to_load)
 
-    def set_mode(self, mode: str):
+    def set_mode(self, mode: str) -> None:
         """Set parameters based on `mode`."""
         self.mode_name = mode
         if mode == "training_model":
@@ -67,7 +68,7 @@ class DataLoader:
             raise ValueError(f"Mode `{mode}` does not exist. Mode must be either training_model, prediction, predicted_dose, or evaluation")
         self.required_files = self.data_shapes.from_data_names(required_data)
 
-    def _force_batch_size_one(self):
+    def _force_batch_size_one(self) -> None:
         if self.batch_size != 1:
             self.batch_size = 1
             Warning("Batch size has been changed to 1 for dose prediction mode")
@@ -91,7 +92,7 @@ class DataLoader:
 
         return batch_data
 
-    def load_data(self, path_to_load: Path):
+    def load_data(self, path_to_load: Path) -> Union[NDArray, dict[str, NDArray]]:
         """Load data in its raw form."""
         data = {}
         if path_to_load.is_dir():
@@ -106,7 +107,7 @@ class DataLoader:
 
         return data
 
-    def shape_data(self, key: str, data: dict):
+    def shape_data(self, key: str, data: dict) -> NDArray:
         """Shapes into form that is amenable to tensorflow and other deep learning packages."""
 
         shaped_data = np.zeros(self.required_files[key])

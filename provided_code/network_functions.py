@@ -110,7 +110,7 @@ class PredictionModel(DefineDoseFromCT):
         epoch = epoch or self.current_epoch
         return self.model_dir / f"epoch_{epoch}.h5"
 
-    def predict_dose(self, epoch: int = 1):
+    def predict_dose(self, epoch: int = 1) -> None:
         """Predicts the dose for the given epoch number"""
         self.generator = load_model(self._get_generator_path(epoch))
         os.makedirs(self.prediction_dir, exist_ok=True)

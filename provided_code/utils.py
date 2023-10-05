@@ -4,9 +4,10 @@ from typing import Dict, Optional, Union
 
 import numpy as np
 import pandas as pd
+from numpy.typing import NDArray
 
 
-def load_file(file_path: Path) -> Union[np.ndarray, Dict[str, np.ndarray]]:
+def load_file(file_path: Path) -> Union[NDArray, Dict[str, NDArray]]:
     """
     Load a file in one of the formats provided in the OpenKBP dataset
     """
@@ -22,7 +23,7 @@ def load_file(file_path: Path) -> Union[np.ndarray, Dict[str, np.ndarray]]:
     return loaded_file
 
 
-def get_paths(directory_path: Path, extension: Optional[str] = None):
+def get_paths(directory_path: Path, extension: Optional[str] = None) -> list[Path]:
     """
     Get the paths of every file contained in `directory_path` that also has the extension `extension` if one is provided.
     """
@@ -45,8 +46,8 @@ def get_paths(directory_path: Path, extension: Optional[str] = None):
     return all_paths
 
 
-def sparse_vector_function(x, indices=None):
-    """Convert a tensor into a dictionary of the non zero values and their corresponding indices
+def sparse_vector_function(x, indices=None) -> dict[str, NDArray]:
+    """Convert a tensor into a dictionary of the non-zero values and their corresponding indices
     :param x: the tensor or, if indices is not None, the values that belong at each index
     :param indices: the raveled indices of the tensor
     :return:  sparse vector in the form of a dictionary

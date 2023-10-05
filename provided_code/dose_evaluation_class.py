@@ -2,6 +2,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from numpy.typing import NDArray
 
 from provided_code.batch import DataBatch
 from provided_code.data_loader import DataLoader
@@ -47,7 +48,7 @@ class DoseEvaluator:
                 self.dose_errors[self.patient_id] = patient_dose_error
                 self.prediction_dvh_metrics_df = self._calculate_dvh_metrics(self.prediction_dvh_metrics_df, self.predicted_dose)
 
-    def get_scores(self) -> tuple[np.ndarray, np.ndarray]:
+    def get_scores(self) -> tuple[NDArray, NDArray]:
         dose_score = np.nanmean(self.dose_errors)
         dvh_errors = np.abs(self.reference_dvh_metrics_df - self.prediction_dvh_metrics_df)
         dvh_score = np.nanmean(dvh_errors.values)
@@ -58,7 +59,7 @@ class DoseEvaluator:
         if self.prediction_loader:
             self.prediction_loader.set_mode("predicted_dose")
 
-    def _calculate_dvh_metrics(self, metric_df: pd.DataFrame, dose: np.ndarray) -> pd.DataFrame:
+    def _calculate_dvh_metrics(self, metric_df: pd.DataFrame, dose: NDArray) -> pd.DataFrame:
         """
         Calculate the DVH values that were used to evaluate submissions in the competition.
         :param metric_df: A DataFrame with columns indexed by the metric name and the structure name
@@ -90,7 +91,7 @@ class DoseEvaluator:
 
         return metric_df
 
-    def get_roi_mask(self, roi_name: str) -> Optional[np.ndarray]:
+    def get_roi_mask(self, roi_name: str) -> Optional[NDArray]:
         roi_index = self.reference_batch.get_index_structure_from_structure(roi_name)
         mask = self.reference_batch.structure_masks[:, :, :, :, roi_index].astype(bool)
         flat_mask = mask.flatten()
@@ -102,17 +103,17 @@ class DoseEvaluator:
         return patient_id
 
     @property
-    def voxel_size(self) -> np.ndarray:
+    def voxel_size(self) -> NDArray:
         return np.prod(self.reference_batch.voxel_dimensions)
 
     @property
-    def possible_dose_mask(self) -> np.ndarray:
+    def possible_dose_mask(self) -> NDArray:
         return self.reference_batch.possible_dose_mask
 
     @property
-    def reference_dose(self) -> np.ndarray:
+    def reference_dose(self) -> NDArray:
         return self.reference_batch.dose.flatten()
 
     @property
-    def predicted_dose(self) -> np.ndarray:
+    def predicted_dose(self) -> NDArray:
         return self.prediction_batch.predicted_dose.flatten()

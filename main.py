@@ -1,14 +1,11 @@
 import shutil
 from pathlib import Path
 
-from provided_code.data_loader import DataLoader
-from provided_code.dose_evaluation_class import DoseEvaluator
-from provided_code.network_functions import PredictionModel
-from provided_code.utils import get_paths
+from provided_code import DataLoader, DoseEvaluator, PredictionModel, get_paths
 
 if __name__ == "__main__":
 
-    prediction_name = "baseline-three"  # Name model to train and number of epochs to train it for
+    prediction_name = "baseline"  # Name model to train and number of epochs to train it for
     test_time = False  # Only change this to True when the model has been fully tuned on the validation set
     num_epochs = 2  # This should probably be increased to 100-200 after your dry run
 

@@ -1,23 +1,24 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Optional, Type
+from typing import Optional
 
 import numpy as np
+from numpy.typing import NDArray
 
 
 class DataBatch:
     def __init__(
         self,
-        dose: Optional[np.ndarray] = None,
-        predicted_dose: Optional[np.ndarray] = None,
-        ct: Optional[np.ndarray] = None,
-        structure_masks: Optional[np.ndarray] = None,
-        structure_mask_names: Optional[List[str]] = None,
-        possible_dose_mask: Optional[np.ndarray] = None,
-        voxel_dimensions: Optional[np.ndarray] = None,
-        patient_list: Optional[List[str]] = None,
-        patient_path_list: Optional[List[Path]] = None,
+        dose: Optional[NDArray] = None,
+        predicted_dose: Optional[NDArray] = None,
+        ct: Optional[NDArray] = None,
+        structure_masks: Optional[NDArray] = None,
+        structure_mask_names: Optional[list[str]] = None,
+        possible_dose_mask: Optional[NDArray] = None,
+        voxel_dimensions: Optional[NDArray] = None,
+        patient_list: Optional[list[str]] = None,
+        patient_path_list: Optional[list[Path]] = None,
     ):
         self.dose = dose
         self.predicted_dose = predicted_dose
@@ -30,14 +31,14 @@ class DataBatch:
         self.patient_path = patient_path_list
 
     @classmethod
-    def initialize_from_required_data(cls, data_dimensions: Dict[str, np.ndarray], batch_size: int) -> DataBatch:
+    def initialize_from_required_data(cls, data_dimensions: dict[str, NDArray], batch_size: int) -> DataBatch:
         attribute_values = {}
         for data, dimensions in data_dimensions.items():
             batch_data_dimensions = (batch_size, *dimensions)
             attribute_values[data] = np.zeros(batch_data_dimensions)
         return cls(**attribute_values)
 
-    def set_values(self, data_name: str, batch_index: int, values: np.ndarray):
+    def set_values(self, data_name: str, batch_index: int, values: NDArray):
         getattr(self, data_name)[batch_index] = values
 
     def get_index_structure_from_structure(self, structure_name: str):
