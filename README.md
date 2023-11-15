@@ -91,9 +91,9 @@ open-kbp
 ### Getting started in Colab
 This should be the simplest way to compete in OpenKBP because the software required for dose prediction is installed in the cloud. It also means you can be competitive in OpenKBP without expensive hardware. 
 
-1. Head to [Colab](https://colab.research.google.com/)
-1. Select 'GitHub' and paste the link to [`main_notebook.ipynb`](main_notebook.ipynb)
-1. In the Google Colab toolbar select: Runtime > Change Runtime. This will open another popup where you should ensure the runtime type is Python 3 and the hardware accelerator is GPU.
+1. Head to <a href="https://colab.research.google.com" _target='blank'>Colab</a>
+1. Select 'GitHub' &rarr; paste the link to <a href="main_notebook.ipynb" _target='blank'>`main_notebook.ipynb`</a> &rarr; ENTER &rarr; click the file name
+1. In the Google Colab toolbar select: Runtime &rarr; Change Runtime. This will open another popup where you should ensure the runtime type is Python 3 and the hardware accelerator is GPU.
 
 You're all set for executing the code.
 
