@@ -89,14 +89,13 @@ open-kbp
  Below, we provide instructions for setting up this repository in Google Colab and on a local machine. 
    
 ### Getting started in Colab
-This should be the simplest way to compete in OpenKBP because the software required for dose prediction is installed in the cloud. It also means you can be competitive in OpenKBP without expensive hardware. All you need is a standard Google account with at least 2GB of available storage in your [Google Drive](https://drive.google.com). 
+This should be the simplest way to compete in OpenKBP because the software required for dose prediction is installed in the cloud. It also means you can be competitive in OpenKBP without expensive hardware. 
 
-1. [Download](https://github.com/ababier/open-kbp/archive/master.zip) this repository 
-2. Make a directory in the _main_ directory of your Google Drive and name it _open-kbp_, henceforth referred to as the open-kbp directory.
-3. Upload all the files in this repository to your open-kbp directory. It takes a while for the files to copy to Google Drive, and there is a small lag between when they're uploaded and when Colab can access them. We recommend you wait an extra 15 minutes after the data is uploaded before continuing.
-4. Right-click the notebook file, and select: Open with > Google Colaboratory. This should open up a window where you can run the notebook in the cloud (for free!). 
-5. In the Google Colab toolbar select: Runtime > Change Runtime. This will open another popup where you should ensure the runtime type is Python 3 and the hardware accelerator is GPU.
-6. Run the first cell in the notebook to mount your Google Drive, and follow the prompts, which should include signing in to your Google account. This cell will give Google Colab access to your Google Drive and your open-kbp directory. Keep in mind that there is sometimes a lag between what you see in your Drive and what you see in Colab. 
+1. Head to <a href="https://colab.research.google.com" _target='blank'>Colab</a>
+1. Select 'GitHub' &rarr; paste the link to <a href="main_notebook.ipynb" _target='blank'>`main_notebook.ipynb`</a> &rarr; ENTER &rarr; click the file name
+1. In the Google Colab toolbar select: Runtime &rarr; Change Runtime. This will open another popup where you should ensure the runtime type is Python 3 and the hardware accelerator is GPU.
+
+You're all set for executing the code.
 
 ### Getting started on a local machine
 1. Make a virtual environment and activate it
