@@ -46,7 +46,7 @@ if __name__ == "__main__":
         print("No patient information was given to calculate metrics")
     else:
         dose_evaluator.evaluate()
-        dvh_score, dose_score = dose_evaluator.get_scores()
+        dose_score, dvh_score = dose_evaluator.get_scores()
         print(f"For this out-of-sample test on {stage_name}:\n\tthe DVH score is {dvh_score:.3f}\n\tthe dose score is {dose_score:.3f}")
 
     # Zip dose to submit
